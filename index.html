@@ -107,6 +107,10 @@
             margin-bottom: 1.5rem;
             flex-wrap: wrap;
             gap: 1rem;
+            background: rgba(255, 255, 255, 0.02);
+            padding: 1rem;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
         }
 
         .db-status {
@@ -114,10 +118,6 @@
             align-items: center;
             gap: 0.5rem;
             font-size: 0.875rem;
-            background: rgba(255, 255, 255, 0.05);
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
         }
 
         .status-dot {
@@ -168,6 +168,409 @@
         .btn-secondary:hover {
             background: rgba(255, 255, 255, 0.15);
         }
+
+        .filter-group {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: 0.35rem 0.85rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .filter-btn.active {
+            background: var(--accent-secondary);
+            color: white;
+            border-color: var(--accent-secondary);
+            font-weight: 600;
+        }
+
+        .lang-switch {
+            display: flex;
+            gap: 0.25rem;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 0.25rem;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .lang-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            padding: 0.25rem 0.6rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .lang-btn.active {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        /* Routine Grid Layout */
+        .planner-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .day-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1.5rem;
+            backdrop-filter: blur(12px);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .day-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--day-color, var(--accent-primary));
+        }
+
+        .day-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .day-card.today-highlight {
+            border: 2px solid var(--accent-primary);
+            box-shadow: 0 0 20px rgba(236, 72, 153, 0.25);
+            background: rgba(30, 41, 59, 0.9);
+        }
+
+        .today-badge {
+            position: absolute;
+            top: 0.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--accent-primary);
+            color: white;
+            font-size: 0.7rem;
+            font-weight: 800;
+            padding: 0.15rem 0.6rem;
+            border-radius: 0 0 6px 6px;
+            text-transform: uppercase;
+        }
+
+        .day-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.25rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 0.75rem;
+        }
+
+        .day-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--day-color);
+        }
+
+        .day-sub {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+
+        .section-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .food-note-box {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.25rem;
+            position: relative;
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+            padding: 0.5rem;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 8px;
+            border-left: 3px solid var(--accent-secondary);
+        }
+
+        .activity-time {
+            font-weight: 700;
+            font-size: 0.875rem;
+            background: rgba(59, 130, 246, 0.15);
+            color: #60a5fa;
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+            white-space: nowrap;
+        }
+
+        .activity-text {
+            font-size: 0.95rem;
+        }
+
+        .edit-icon {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            cursor: pointer;
+            opacity: 0.3;
+            transition: opacity 0.2s;
+            color: white;
+            background: none;
+            border: none;
+        }
+
+        .day-card:hover .edit-icon {
+            opacity: 0.8;
+        }
+
+        /* Footer & Extra Notes */
+        .info-panel {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .info-card h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.1rem;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .info-card p, .info-card ul {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .info-card ul {
+            padding-left: 1.25rem;
+        }
+
+        .info-card li {
+            margin-bottom: 0.4rem;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+
+        /* Edit Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: #1e293b;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 16px;
+            padding: 2rem;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+            animation: modalScale 0.25s ease-out;
+        }
+
+        @keyframes modalScale {
+            from { transform: scale(0.95); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-header {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        .form-control {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 0.75rem;
+            color: white;
+            font-family: inherit;
+            font-size: 0.95rem;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--accent-secondary);
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.75rem;
+            margin-top: 2rem;
+        }
+
+        /* Database Config Modal */
+        .config-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            text-decoration: underline;
+            font-size: 0.8rem;
+        }
+
+        /* Print styling rules */
+        @media print {
+            body {
+                background: white !important;
+                color: black !important;
+                padding: 0;
+            }
+            .no-print, .edit-icon, .actions-bar, header button, footer, .config-btn, .lang-switch, .filter-group {
+                display: none !important;
+            }
+            .planner-grid {
+                display: block !important;
+            }
+            .day-card {
+                background: white !important;
+                border: 1px solid #ddd !important;
+                color: black !important;
+                page-break-inside: avoid;
+                margin-bottom: 1.5rem;
+                box-shadow: none !important;
+                transform: none !important;
+            }
+            .day-title {
+                color: black !important;
+            }
+            .food-note-box {
+                background: #f8fafc !important;
+                border: 1px solid #e2e8f0 !important;
+                color: black !important;
+            }
+            .activity-item {
+                background: #f8fafc !important;
+                border-left: 3px solid #3b82f6 !important;
+                color: black !important;
+            }
+            .activity-time {
+                background: #e2e8f0 !important;
+                color: black !important;
+            }
+            h1 {
+                background: none !important;
+                -webkit-text-fill-color: initial !important;
+                color: black !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1 id="page-title">Erdem Family Weekly Planner</h1>
+            <p class="subtitle" id="page-subtitle">Weekly Routines & Healthy Meals Dashboard</p>
+            <div class="members">
+                <span class="member-badge badge-parents">Parents: Ece & Erdem</span>
+                <span class="member-badge badge-kids">Kids: Arya & Mira</span>
+            </div>
+        </header>
+
+        <div class="actions-bar">
+            <div class="filter-group no-print">
+                <button class="filter-btn active" onclick="setFilter('all')" id="filter-all">All</button>
+                <button class="filter-btn" onclick="setFilter('ece')" id="filter-ece">👩 Ece</button>
+                <button class="filter-btn" onclick="setFilter('erdem')" id="filter-erdem">👨 Erdem</button>
+                <button class="filter-btn" onclick="setFilter('arya')" id="filter-arya">👧 Arya</button>
+                <button class="filter-btn" onclick="setFilter('mira')" id="filter-mira">👶 Mira</button>
+            </div>
+            
+            <div style="display: flex; gap: 1rem; align-items: center;">
+                <div class="lang-switch no-print">
+                    <button class="lang-btn active" onclick="setLanguage('en')" id="lang-en">EN</button>
+                    <button class="lang-btn" onclick="setLanguage('tr')" id="lang-tr">TR</button>
+                </div>
+
+                <div class="db-status">
+                    <div class="status-dot" id="db-status-dot"></div>
+                    <span id="db-status-text">Local Mock DB</span>
+                    <button class="config-btn" onclick="openConfigModal()">Configure MongoDB</button>
+                </div>
+                <div>
+                    <button class="btn btn-secondary no-print" onclick="window.print()" id="btn-print">
+                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/>
+                            <path d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2H5zM4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H4V3zm1 5a2 2 0 0 0-2 2v1H2a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v-1a2 2 0 0 0-2-2H5zm7 2v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1z"/>
+                        </svg>
+                        Print
+                    </button>
+                </div>
+            </div>
+        </div>
 
         /* Routine Grid Layout */
         .planner-grid {
@@ -562,93 +965,146 @@
                 day: "Pazartesi",
                 engDay: "Monday",
                 color: "var(--monday-color)",
-                meals: "Hamburger",
+                meals: "🍔 Hamburger",
                 activities: [
-                    { time: "09:00 - 17:00", text: "Erdem Work" },
-                    { time: "11:55", text: "Ece leaves home" },
-                    { time: "12:15 - 15:20", text: "Ece Work" },
-                    { time: "3:20", text: "School pickup & routine start (Arya)" },
-                    { time: "3:45", text: "Everyday pickup check (Mira)" }
+                    { time: "09:00 - 17:00", text: "👨 Erdem Work" },
+                    { time: "11:55", text: "👩 Ece leaves home" },
+                    { time: "12:15 - 15:20", text: "👩 Ece Work" },
+                    { time: "3:20", text: "👧 School pickup & routine start (Arya)" },
+                    { time: "3:45", text: "👶 Everyday pickup check (Mira)" }
                 ]
             },
             {
                 day: "Salı",
                 engDay: "Tuesday",
                 color: "var(--tuesday-color)",
-                meals: "Chicken\nBezelye + pilav",
+                meals: "🍗 Chicken\n🟢 Bezelye + pilav",
                 activities: [
-                    { time: "07:00 - 15:00", text: "Erdem Work (Support Day)" },
-                    { time: "11:55", text: "Ece leaves home" },
-                    { time: "12:15 - 15:20", text: "Ece Work" },
-                    { time: "16:20", text: "Tennis (Arya)" },
-                    { time: "16:20", text: "Basketbol (Arya)" },
-                    { time: "3:45", text: "Everyday pickup check (Mira)" }
+                    { time: "07:00 - 15:00", text: "👨 Erdem Work (Support Day)" },
+                    { time: "11:55", text: "👩 Ece leaves home" },
+                    { time: "12:15 - 15:20", text: "👩 Ece Work" },
+                    { time: "16:20", text: "🎾 Tennis (Arya)" },
+                    { time: "16:20", text: "🏀 Basketbol (Arya)" },
+                    { time: "3:45", text: "👶 Everyday pickup check (Mira)" }
                 ]
             },
             {
                 day: "Çarşamba",
                 engDay: "Wednesday",
                 color: "var(--wednesday-color)",
-                meals: "Tava\nsosis kasarli (Waitrose)",
+                meals: "🍳 Tava\n🌭 sosis kasarli (Waitrose)",
                 activities: [
-                    { time: "09:00 - 17:00", text: "Erdem Work" },
-                    { time: "11:55", text: "Ece leaves home" },
-                    { time: "12:15 - 15:20", text: "Ece Work" },
-                    { time: "16:45", text: "Art club (Arya)" },
-                    { time: "3:45", text: "Everyday pickup check (Mira)" }
+                    { time: "09:00 - 17:00", text: "👨 Erdem Work" },
+                    { time: "11:55", text: "👩 Ece leaves home" },
+                    { time: "12:15 - 15:20", text: "👩 Ece Work" },
+                    { time: "16:45", text: "🎨 Art club (Arya)" },
+                    { time: "3:45", text: "👶 Everyday pickup check (Mira)" }
                 ]
             },
             {
                 day: "Perşembe",
                 engDay: "Thursday",
                 color: "var(--thursday-color)",
-                meals: "Pasta Bolognese",
+                meals: "🍝 Pasta Bolognese",
                 activities: [
-                    { time: "07:00 - 15:00", text: "Erdem Work (Support Day)" },
-                    { time: "11:55", text: "Ece leaves home" },
-                    { time: "12:15 - 15:20", text: "Ece Work" },
-                    { time: "15:00", text: "After school club (Arya)" },
-                    { time: "3:45", text: "Everyday pickup check (Mira)" }
+                    { time: "07:00 - 15:00", text: "👨 Erdem Work (Support Day)" },
+                    { time: "11:55", text: "👩 Ece leaves home" },
+                    { time: "12:15 - 15:20", text: "👩 Ece Work" },
+                    { time: "15:00", text: "🏫 After school club (Arya)" },
+                    { time: "3:45", text: "👶 Everyday pickup check (Mira)" }
                 ]
             },
             {
                 day: "Cuma",
                 engDay: "Friday",
                 color: "var(--friday-color)",
-                meals: "Meat balls\nchicken",
+                meals: "🧆 Meat balls\n🍗 chicken",
                 activities: [
-                    { time: "09:00 - 17:00", text: "Erdem Work" },
-                    { time: "11:55", text: "Ece leaves home" },
-                    { time: "12:15 - 15:20", text: "Ece Work" },
-                    { time: "3:20", text: "Friday routine start (Arya)" },
-                    { time: "3:45", text: "Everyday pickup check (Mira)" }
+                    { time: "09:00 - 17:00", text: "👨 Erdem Work" },
+                    { time: "11:55", text: "👩 Ece leaves home" },
+                    { time: "12:15 - 15:20", text: "👩 Ece Work" },
+                    { time: "3:20", text: "🎒 Friday routine start (Arya)" },
+                    { time: "3:45", text: "👶 Everyday pickup check (Mira)" }
                 ]
             },
             {
                 day: "Cumartesi",
                 engDay: "Saturday",
                 color: "var(--saturday-color)",
-                meals: "Healthy choices / outdoor meals",
+                meals: "🥗 Healthy choices / outdoor meals",
                 activities: [
-                    { time: "All Day", text: "Train travels to country side" }
+                    { time: "All Day", text: "🚂 Train travels to country side 🌳" }
                 ]
             },
             {
                 day: "Pazar",
                 engDay: "Sunday",
                 color: "var(--sunday-color)",
-                meals: "Family dinner",
+                meals: "🍽️ Family dinner",
                 activities: [
-                    { time: "09:30", text: "Ice skating preparation (Arya)" },
-                    { time: "10:00", text: "Ice skating & Science Park 🔺 (Arya)" },
-                    { time: "11:15", text: "Science Park Tour (Circled)" },
-                    { time: "Sunday", text: "Swimming (Mira)" }
+                    { time: "09:30", text: "⛸️ Ice skating preparation (Arya)" },
+                    { time: "10:00", text: "⛸️ Ice skating & Science Park 🔺 (Arya)" },
+                    { time: "11:15", text: "🧪 Science Park Tour (Circled)" },
+                    { time: "Sunday", text: "🏊 Swimming (Mira)" }
                 ]
             }
         ];
 
         let plannerData = [];
         let config = { mongoUrl: "", mongoKey: "" };
+        let currentFilter = "all";
+        let currentLanguage = "en";
+
+        const translations = {
+            en: {
+                title: "Erdem Family Weekly Planner",
+                subtitle: "Weekly Routines & Healthy Meals Dashboard",
+                parents: "Parents: Ece & Erdem",
+                kids: "Kids: Arya & Mira",
+                mealsTitle: "Meals / Food Notes",
+                activitiesTitle: "Times & Activities",
+                noActivities: "No scheduled activities",
+                todayBadge: "Today",
+                emptyMeals: "No meal notes",
+                copyAlert: "Markdown copied for {day}!",
+                btnCopy: "Copy MD",
+                btnEdit: "Edit",
+                btnConfig: "Configure MongoDB",
+                btnPrint: "Print",
+                allFilter: "All",
+                modalTitleEdit: "Edit: {day}",
+                labelMeals: "Meals / Food Notes",
+                labelAct: "Times & Activities (JSON Array)",
+                btnCancel: "Cancel",
+                btnSave: "Save Changes",
+                dbMock: "Local Mock DB",
+                dbConnected: "MongoDB Connected"
+            },
+            tr: {
+                title: "Erdem Ailesi Haftalık Planlayıcı",
+                subtitle: "Haftalık Rutinler & Sağlıklı Yemekler Paneli",
+                parents: "Ebeveynler: Ece & Erdem",
+                kids: "Çocuklar: Arya & Mira",
+                mealsTitle: "Yemekler / Gıda Notları",
+                activitiesTitle: "Saatler & Aktiviteler",
+                noActivities: "Planlanmış aktivite yok",
+                todayBadge: "Bugün",
+                emptyMeals: "Yemek notu yok",
+                copyAlert: "{day} için Markdown kopyalandı!",
+                btnCopy: "Kopyala",
+                btnEdit: "Düzenle",
+                btnConfig: "MongoDB Yapılandır",
+                btnPrint: "Yazdır",
+                allFilter: "Tümü",
+                modalTitleEdit: "Düzenle: {day}",
+                labelMeals: "Yemekler / Gıda Notları",
+                labelAct: "Saatler & Aktiviteler (JSON Array)",
+                btnCancel: "İptal",
+                btnSave: "Değişiklikleri Kaydet",
+                dbMock: "Yerel Mock DB",
+                dbConnected: "MongoDB Bağlı"
+            }
+        };
 
         // Initialize state
         function init() {
@@ -664,8 +1120,8 @@
             const savedData = localStorage.getItem("erdem_planner_data");
             if (savedData) {
                 plannerData = JSON.parse(savedData);
-                // Migrate data if keys don't match the new counts to prevent locking users in old browser states
-                if (plannerData.length > 0 && !plannerData[0].activities.some(a => a.text.includes("Erdem Work"))) {
+                // Migrate to emoji initialData if none present
+                if (plannerData.length > 0 && !plannerData[0].meals.includes("🍔")) {
                     plannerData = initialData;
                     saveDataLocally();
                 }
@@ -683,22 +1139,81 @@
             }
         }
 
+        function setLanguage(lang) {
+            currentLanguage = lang;
+            document.getElementById("lang-en").classList.toggle("active", lang === "en");
+            document.getElementById("lang-tr").classList.toggle("active", lang === "tr");
+            
+            // Translate header elements
+            const t = translations[lang];
+            document.getElementById("page-title").innerText = t.title;
+            document.getElementById("page-subtitle").innerText = t.subtitle;
+            document.querySelector(".badge-parents").innerText = t.parents;
+            document.querySelector(".badge-kids").innerText = t.kids;
+            document.getElementById("filter-all").innerText = t.allFilter;
+            document.getElementById("btn-print").innerHTML = `
+                <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/>
+                    <path d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2H5zM4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H4V3zm1 5a2 2 0 0 0-2 2v1H2a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v-1a2 2 0 0 0-2-2H5zm7 2v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1z"/>
+                </svg>
+                ${t.btnPrint}
+            `;
+            
+            updateDbStatus();
+            renderPlanner();
+        }
+
+        function setFilter(filter) {
+            currentFilter = filter;
+            const buttons = document.querySelectorAll(".filter-btn");
+            buttons.forEach(btn => {
+                btn.classList.toggle("active", btn.id === `filter-${filter}`);
+            });
+            renderPlanner();
+        }
+
         function saveDataLocally() {
             localStorage.setItem("erdem_planner_data", JSON.stringify(plannerData));
+        }
+
+        function getTodayIndex() {
+            // Sunday is 0, Monday is 1... in JS Date
+            // Map Pazartesi to index 0... Pazar to index 6
+            const day = new Date().getDay();
+            if (day === 0) return 6; // Sunday
+            return day - 1; // Monday to Saturday
         }
 
         function renderPlanner() {
             const grid = document.getElementById("planner-grid");
             grid.innerHTML = "";
+            const t = translations[currentLanguage];
+            const todayIndex = getTodayIndex();
 
             plannerData.forEach((dayInfo, index) => {
+                // Determine activities that match the current filter
+                let filteredActivities = dayInfo.activities;
+                if (currentFilter !== "all") {
+                    filteredActivities = dayInfo.activities.filter(act => {
+                        return act.text.toLowerCase().includes(currentFilter);
+                    });
+                }
+
+                // If filtering and no activities match, skip or render empty card
+                if (currentFilter !== "all" && filteredActivities.length === 0) {
+                    return;
+                }
+
                 const card = document.createElement("div");
                 card.className = "day-card";
+                if (index === todayIndex) {
+                    card.className += " today-highlight";
+                }
                 card.style.setProperty("--day-color", dayInfo.color);
 
                 let activitiesHtml = "";
-                if (dayInfo.activities && dayInfo.activities.length > 0) {
-                    dayInfo.activities.forEach(act => {
+                if (filteredActivities.length > 0) {
+                    filteredActivities.forEach(act => {
                         activitiesHtml += `
                             <div class="activity-item">
                                 <span class="activity-time">${act.time}</span>
@@ -707,29 +1222,33 @@
                         `;
                     });
                 } else {
-                    activitiesHtml = `<p style="font-size:0.9rem; color:var(--text-secondary); font-style:italic;">No scheduled activities</p>`;
+                    activitiesHtml = `<p style="font-size:0.9rem; color:var(--text-secondary); font-style:italic;">${t.noActivities}</p>`;
                 }
 
+                const dayDisplayName = currentLanguage === "tr" ? dayInfo.day : dayInfo.engDay;
+                const daySubName = currentLanguage === "tr" ? dayInfo.engDay : dayInfo.day;
+
                 card.innerHTML = `
+                    ${index === todayIndex ? `<div class="today-badge">${t.todayBadge}</div>` : ""}
                     <div style="position: absolute; top: 1rem; right: 1rem; display: flex; gap: 0.5rem;" class="no-print">
                         <button class="btn btn-secondary" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;" onclick="copyAsMarkdown(${index})" title="Copy as Markdown">
-                            Copy MD
+                            ${t.btnCopy}
                         </button>
-                        <button class="btn btn-secondary" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;" onclick="openEditModal(${index})" title="Edit ${dayInfo.day}">
-                            Edit
+                        <button class="btn btn-secondary" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;" onclick="openEditModal(${index})" title="Edit">
+                            ${t.btnEdit}
                         </button>
                     </div>
                     <div class="day-header" style="margin-top: 1rem;">
-                        <span class="day-title">${dayInfo.day}</span>
-                        <span class="day-sub">${dayInfo.engDay}</span>
+                        <span class="day-title">${dayDisplayName}</span>
+                        <span class="day-sub">${daySubName}</span>
                     </div>
                     
-                    <div class="section-title">Meals / Food Notes</div>
+                    <div class="section-title">${t.mealsTitle}</div>
                     <div class="food-note-box">
-                        ${dayInfo.meals ? dayInfo.meals.replace(/\n/g, '<br>') : '<span style="font-style:italic;color:var(--text-secondary)">No meal notes</span>'}
+                        ${dayInfo.meals ? dayInfo.meals.replace(/\n/g, '<br>') : `<span style="font-style:italic;color:var(--text-secondary)">${t.emptyMeals}</span>`}
                     </div>
 
-                    <div class="section-title">Times & Activities</div>
+                    <div class="section-title">${t.activitiesTitle}</div>
                     <div class="activities-container">
                         ${activitiesHtml}
                     </div>
@@ -741,20 +1260,23 @@
 
         function copyAsMarkdown(index) {
             const dayInfo = plannerData[index];
-            let md = `### ${dayInfo.day} (${dayInfo.engDay}) Routine\n\n`;
-            md += `**Meals / Food Notes:**\n${dayInfo.meals || "None"}\n\n`;
-            md += `**Times & Activities:**\n`;
+            const t = translations[currentLanguage];
+            const dayName = currentLanguage === "tr" ? dayInfo.day : dayInfo.engDay;
+            
+            let md = `### ${dayName} Routine\n\n`;
+            md += `**${t.mealsTitle}:**\n${dayInfo.meals || "None"}\n\n`;
+            md += `**${t.activitiesTitle}:**\n`;
             
             if (dayInfo.activities && dayInfo.activities.length > 0) {
                 dayInfo.activities.forEach(act => {
                     md += `- **${act.time}**: ${act.text}\n`;
                 });
             } else {
-                md += `*No scheduled activities*\n`;
+                md += `*${t.noActivities}*\n`;
             }
 
             navigator.clipboard.writeText(md).then(() => {
-                alert(`Markdown copied for ${dayInfo.day}!`);
+                alert(t.copyAlert.replace("{day}", dayName));
             }).catch(err => {
                 console.error("Could not copy text: ", err);
             });
@@ -763,8 +1285,11 @@
         // Modal Control
         function openEditModal(index) {
             const dayInfo = plannerData[index];
+            const t = translations[currentLanguage];
+            const dayName = currentLanguage === "tr" ? dayInfo.day : dayInfo.engDay;
+            
             document.getElementById("edit-day-index").value = index;
-            document.getElementById("modal-title").innerText = `Edit: ${dayInfo.day} (${dayInfo.engDay})`;
+            document.getElementById("modal-title").innerText = t.modalTitleEdit.replace("{day}", dayName);
             document.getElementById("edit-food").value = dayInfo.meals || "";
             document.getElementById("edit-activities").value = JSON.stringify(dayInfo.activities, null, 2);
             document.getElementById("edit-modal").style.display = "flex";
@@ -821,20 +1346,20 @@
         function updateDbStatus(isOnline = false) {
             const dot = document.getElementById("db-status-dot");
             const text = document.getElementById("db-status-text");
+            const t = translations[currentLanguage];
 
             if (config.mongoUrl) {
                 dot.className = "status-dot online";
-                text.innerText = "MongoDB Connected";
+                text.innerText = t.dbConnected;
             } else {
                 dot.className = "status-dot";
                 text.style.boxShadow = "none";
-                text.innerText = "Local Mock DB";
+                text.innerText = t.dbMock;
             }
         }
 
         async function fetchFromMongoDB() {
             try {
-                // If using MongoDB Web SDK or generic Endpoint API:
                 const response = await fetch(config.mongoUrl, {
                     method: "GET",
                     headers: {
