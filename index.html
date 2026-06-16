@@ -882,12 +882,34 @@
             </div>
             <div>
                 <button class="btn btn-secondary no-print" onclick="window.print()">
-                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                        <path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/>
-                        <path d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2H5zM4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H4V3zm1 5a2 2 0 0 0-2 2v1H2a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v-1a2 2 0 0 0-2-2H5zm7 2v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1z"/>
-                    </svg>
-                    Print Planner
-                </button>
+            <div class="filter-group no-print">
+                <button class="filter-btn active" onclick="setFilter('all')" id="filter-all">All</button>
+                <button class="filter-btn" onclick="setFilter('ece')" id="filter-ece">👩 Ece</button>
+                <button class="filter-btn" onclick="setFilter('erdem')" id="filter-erdem">👨 Erdem</button>
+                <button class="filter-btn" onclick="setFilter('arya')" id="filter-arya">👧 Arya</button>
+                <button class="filter-btn" onclick="setFilter('mira')" id="filter-mira">👶 Mira</button>
+            </div>
+            
+            <div style="display: flex; gap: 1rem; align-items: center;">
+                <div class="lang-switch no-print">
+                    <button class="lang-btn active" onclick="setLanguage('en')" id="lang-en">EN</button>
+                    <button class="lang-btn" onclick="setLanguage('tr')" id="lang-tr">TR</button>
+                </div>
+
+                <div class="db-status">
+                    <div class="status-dot" id="db-status-dot"></div>
+                    <span id="db-status-text">Local Mock DB</span>
+                    <button class="config-btn" onclick="openConfigModal()">Configure MongoDB</button>
+                </div>
+                <div>
+                    <button class="btn btn-secondary no-print" onclick="window.print()" id="btn-print">
+                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/>
+                            <path d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2H5zM4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H4V3zm1 5a2 2 0 0 0-2 2v1H2a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v-1a2 2 0 0 0-2-2H5zm7 2v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1z"/>
+                        </svg>
+                        Print
+                    </button>
+                </div>
             </div>
         </div>
 
@@ -900,6 +922,7 @@
                 <h3>📌 Board Additional Notes</h3>
                 <p><strong>Top Left (Circled):</strong> IP (or 1P)</p>
                 <p style="margin-top: 0.5rem;"><strong>Daily Routine:</strong> Kids are picked up from school every day at 3:45 PM.</p>
+                <p style="margin-top: 0.5rem; color: #f59e0b;"><strong>BST Clock:</strong> Browser runs notifications matching British Summer Time.</p>
             </div>
             <div class="info-card">
                 <h3>🎗️ Notepad (Bottom Left)</h3>
@@ -967,11 +990,11 @@
                 color: "var(--monday-color)",
                 meals: "🍔 Hamburger",
                 activities: [
-                    { time: "09:00 - 17:00", text: "👨 Erdem Work" },
+                    { time: "09:00", text: "👨 Erdem Work" },
                     { time: "11:55", text: "👩 Ece leaves home" },
-                    { time: "12:15 - 15:20", text: "👩 Ece Work" },
-                    { time: "3:20", text: "👧 School pickup & routine start (Arya)" },
-                    { time: "3:45", text: "👶 Everyday pickup check (Mira)" }
+                    { time: "12:15", text: "👩 Ece Work" },
+                    { time: "15:20", text: "👧 School pickup & routine start (Arya)" },
+                    { time: "15:45", text: "👶 Everyday pickup check (Mira)" }
                 ]
             },
             {
@@ -980,12 +1003,12 @@
                 color: "var(--tuesday-color)",
                 meals: "🍗 Chicken\n🟢 Bezelye + pilav",
                 activities: [
-                    { time: "07:00 - 15:00", text: "👨 Erdem Work (Support Day)" },
+                    { time: "07:00", text: "👨 Erdem Work (Support Day)" },
                     { time: "11:55", text: "👩 Ece leaves home" },
-                    { time: "12:15 - 15:20", text: "👩 Ece Work" },
+                    { time: "12:15", text: "👩 Ece Work" },
                     { time: "16:20", text: "🎾 Tennis (Arya)" },
                     { time: "16:20", text: "🏀 Basketbol (Arya)" },
-                    { time: "3:45", text: "👶 Everyday pickup check (Mira)" }
+                    { time: "15:45", text: "👶 Everyday pickup check (Mira)" }
                 ]
             },
             {
@@ -994,11 +1017,11 @@
                 color: "var(--wednesday-color)",
                 meals: "🍳 Tava\n🌭 sosis kasarli (Waitrose)",
                 activities: [
-                    { time: "09:00 - 17:00", text: "👨 Erdem Work" },
+                    { time: "09:00", text: "👨 Erdem Work" },
                     { time: "11:55", text: "👩 Ece leaves home" },
-                    { time: "12:15 - 15:20", text: "👩 Ece Work" },
+                    { time: "12:15", text: "👩 Ece Work" },
                     { time: "16:45", text: "🎨 Art club (Arya)" },
-                    { time: "3:45", text: "👶 Everyday pickup check (Mira)" }
+                    { time: "15:45", text: "👶 Everyday pickup check (Mira)" }
                 ]
             },
             {
@@ -1007,11 +1030,11 @@
                 color: "var(--thursday-color)",
                 meals: "🍝 Pasta Bolognese",
                 activities: [
-                    { time: "07:00 - 15:00", text: "👨 Erdem Work (Support Day)" },
+                    { time: "07:00", text: "👨 Erdem Work (Support Day)" },
                     { time: "11:55", text: "👩 Ece leaves home" },
-                    { time: "12:15 - 15:20", text: "👩 Ece Work" },
+                    { time: "12:15", text: "👩 Ece Work" },
                     { time: "15:00", text: "🏫 After school club (Arya)" },
-                    { time: "3:45", text: "👶 Everyday pickup check (Mira)" }
+                    { time: "15:45", text: "👶 Everyday pickup check (Mira)" }
                 ]
             },
             {
@@ -1020,11 +1043,11 @@
                 color: "var(--friday-color)",
                 meals: "🧆 Meat balls\n🍗 chicken",
                 activities: [
-                    { time: "09:00 - 17:00", text: "👨 Erdem Work" },
+                    { time: "09:00", text: "👨 Erdem Work" },
                     { time: "11:55", text: "👩 Ece leaves home" },
-                    { time: "12:15 - 15:20", text: "👩 Ece Work" },
-                    { time: "3:20", text: "🎒 Friday routine start (Arya)" },
-                    { time: "3:45", text: "👶 Everyday pickup check (Mira)" }
+                    { time: "12:15", text: "👩 Ece Work" },
+                    { time: "15:20", text: "🎒 Friday routine start (Arya)" },
+                    { time: "15:45", text: "👶 Everyday pickup check (Mira)" }
                 ]
             },
             {
@@ -1033,7 +1056,7 @@
                 color: "var(--saturday-color)",
                 meals: "🥗 Healthy choices / outdoor meals",
                 activities: [
-                    { time: "All Day", text: "🚂 Train travels to country side 🌳" }
+                    { time: "09:00", text: "🚂 Train travels to country side 🌳" }
                 ]
             },
             {
@@ -1045,7 +1068,7 @@
                     { time: "09:30", text: "⛸️ Ice skating preparation (Arya)" },
                     { time: "10:00", text: "⛸️ Ice skating & Science Park 🔺 (Arya)" },
                     { time: "11:15", text: "🧪 Science Park Tour (Circled)" },
-                    { time: "Sunday", text: "🏊 Swimming (Mira)" }
+                    { time: "08:30", text: "🏊 Swimming (Mira)" }
                 ]
             }
         ];
@@ -1116,12 +1139,17 @@
                 document.getElementById("mongo-key").value = config.mongoKey || "";
             }
 
+            // Request browser notification permission
+            if ("Notification" in window && Notification.permission === "default") {
+                Notification.requestPermission();
+            }
+
             // Load data
             const savedData = localStorage.getItem("erdem_planner_data");
             if (savedData) {
                 plannerData = JSON.parse(savedData);
-                // Migrate to emoji initialData if none present
-                if (plannerData.length > 0 && !plannerData[0].meals.includes("🍔")) {
+                // Migrate to new format if no notification times are configured
+                if (plannerData.length > 0 && plannerData[0].activities.some(a => a.time.includes("-"))) {
                     plannerData = initialData;
                     saveDataLocally();
                 }
@@ -1137,6 +1165,10 @@
             if (config.mongoUrl) {
                 fetchFromMongoDB();
             }
+
+            // Start reminder daemon
+            setInterval(checkUpcomingEvents, 30000);
+            checkUpcomingEvents();
         }
 
         function setLanguage(lang) {
@@ -1184,6 +1216,66 @@
             return day - 1; // Monday to Saturday
         }
 
+        function getPersonClass(text) {
+            const lower = text.toLowerCase();
+            if (lower.includes("ece")) return "ece-act";
+            if (lower.includes("erdem")) return "erdem-act";
+            if (lower.includes("arya")) return "arya-act";
+            if (lower.includes("mira")) return "mira-act";
+            return "";
+        }
+
+        let alertedTimes = {};
+
+        function checkUpcomingEvents() {
+            // Determine BST current time
+            const now = new Date();
+            const todayIdx = getTodayIndex();
+            const todayData = plannerData[todayIdx];
+            if (!todayData) return;
+
+            const currentHour = now.getHours();
+            const currentMin = now.getMinutes();
+            const totalMinutesNow = currentHour * 60 + currentMin;
+
+            let banner = document.getElementById("bst-banner");
+            let activeAlert = false;
+
+            todayData.activities.forEach(act => {
+                const parts = act.time.split(":");
+                if (parts.length === 2) {
+                    const eventHour = parseInt(parts[0]);
+                    const eventMin = parseInt(parts[1]);
+                    const totalMinutesEvent = eventHour * 60 + eventMin;
+
+                    // Diff is 10 minutes to trigger reliably
+                    const diff = totalMinutesEvent - totalMinutesNow;
+                    if (diff === 10) {
+                        activeAlert = true;
+                        banner.style.display = "flex";
+                        banner.innerText = `⏰ Reminder: "${act.text}" is starting in 10 minutes at ${act.time} BST!`;
+                        
+                        const alertKey = `${todayIdx}-${act.time}-${act.text}`;
+                        if (!alertedTimes[alertKey]) {
+                            alertedTimes[alertKey] = true;
+                            if ("Notification" in window && Notification.permission === "granted") {
+                                new Notification("Erdem Family Planner BST Reminder", {
+                                    body: `"${act.text}" is starting in 10 minutes (${act.time} BST)!`,
+                                    icon: "https://cdn-icons-png.flaticon.com/512/3114/3114812.png"
+                                });
+                            } else {
+                                alert(`⏰ Event starting in 10 minutes: ${act.text} at ${act.time} BST!`);
+                            }
+                        }
+                    }
+                }
+            });
+
+            if (!activeAlert) {
+                banner.style.display = "none";
+            }
+        }
+
         function renderPlanner() {
             const grid = document.getElementById("planner-grid");
             grid.innerHTML = "";
@@ -1214,9 +1306,10 @@
                 let activitiesHtml = "";
                 if (filteredActivities.length > 0) {
                     filteredActivities.forEach(act => {
+                        const personClass = getPersonClass(act.text);
                         activitiesHtml += `
-                            <div class="activity-item">
-                                <span class="activity-time">${act.time}</span>
+                            <div class="activity-item ${personClass}">
+                                <span class="activity-time">${act.time} BST</span>
                                 <span class="activity-text">${act.text}</span>
                             </div>
                         `;
@@ -1269,7 +1362,7 @@
             
             if (dayInfo.activities && dayInfo.activities.length > 0) {
                 dayInfo.activities.forEach(act => {
-                    md += `- **${act.time}**: ${act.text}\n`;
+                    md += `- **${act.time} BST**: ${act.text}\n`;
                 });
             } else {
                 md += `*${t.noActivities}*\n`;
