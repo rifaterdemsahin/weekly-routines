@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Erdem Family Weekly Planner</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --border-color: rgba(255, 255, 255, 0.1);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --accent-primary: #ec4899; /* Pink */
+            --accent-secondary: #3b82f6; /* Blue */
+            
+            --monday-color: #f43f5e;
+            --tuesday-color: #f59e0b;
+            --wednesday-color: #10b981;
+            --thursday-color: #8b5cf6;
+            --friday-color: #06b6d4;
+            --saturday-color: #ec4899;
+            --sunday-color: #f43f5e;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(circle at 10% 20%, rgba(236, 72, 153, 0.15) 0%, transparent 40%),
+                              radial-gradient(circle at 90% 80%, rgba(59, 130, 246, 0.15) 0%, transparent 40%);
+            background-attachment: fixed;
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 2rem 1rem;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(to right, #ec4899, #8b5cf6, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.05em;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            font-weight: 300;
+        }
+
+        .members {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .member-badge {
+            padding: 0.35rem 1rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            border: 1px solid var(--border-color);
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(8px);
+        }
+
+        .badge-parents {
+            border-color: rgba(236, 72, 153, 0.4);
+            color: #f472b6;
+        }
+
+        .badge-kids {
+            border-color: rgba(59, 130, 246, 0.4);
+            color: #60a5fa;
+        }
+
+        .actions-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .db-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #ef4444; /* Offline/Mock by default until configured */
+            box-shadow: 0 0 8px #ef4444;
+        }
+
+        .status-dot.online {
+            background: #10b981;
+            box-shadow: 0 0 8px #10b981;
+        }
+
+        .btn {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            padding: 0.5rem 1.25rem;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: white;
+            box-shadow: 0 4px 12px rgba(236, 72, 153, 0.2);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(236, 72, 153, 0.3);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        /* Routine Grid Layout */
+        .planner-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .day-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1.5rem;
+            backdrop-filter: blur(12px);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .day-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--day-color, var(--accent-primary));
+        }
+
+        .day-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .day-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.25rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 0.75rem;
+        }
+
+        .day-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--day-color);
+        }
+
+        .day-sub {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+
+        .section-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .food-note-box {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.25rem;
+            position: relative;
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+            padding: 0.5rem;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 8px;
+            border-left: 3px solid var(--accent-secondary);
+        }
+
+        .activity-time {
+            font-weight: 700;
+            font-size: 0.875rem;
+            background: rgba(59, 130, 246, 0.15);
+            color: #60a5fa;
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+            white-space: nowrap;
+        }
+
+        .activity-text {
+            font-size: 0.95rem;
+        }
+
+        .edit-icon {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            cursor: pointer;
+            opacity: 0.3;
+            transition: opacity 0.2s;
+            color: white;
+            background: none;
+            border: none;
+        }
+
+        .day-card:hover .edit-icon {
+            opacity: 0.8;
+        }
+
+        /* Footer & Extra Notes */
+        .info-panel {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .info-card h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.1rem;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .info-card p, .info-card ul {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .info-card ul {
+            padding-left: 1.25rem;
+        }
+
+        .info-card li {
+            margin-bottom: 0.4rem;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+
+        /* Edit Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: #1e293b;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 16px;
+            padding: 2rem;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+            animation: modalScale 0.25s ease-out;
+        }
+
+        @keyframes modalScale {
+            from { transform: scale(0.95); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-header {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        .form-control {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 0.75rem;
+            color: white;
+            font-family: inherit;
+            font-size: 0.95rem;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--accent-secondary);
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.75rem;
+            margin-top: 2rem;
+        }
+
+        /* Database Config Modal */
+        .config-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            text-decoration: underline;
+            font-size: 0.8rem;
+        }
+
+        /* Print styling rules */
+        @media print {
+            body {
+                background: white !important;
+                color: black !important;
+                padding: 0;
+            }
+            .no-print, .edit-icon, .actions-bar, header button, footer, .config-btn {
+                display: none !important;
+            }
+            .planner-grid {
+                display: block !important;
+            }
+            .day-card {
+                background: white !important;
+                border: 1px solid #ddd !important;
+                color: black !important;
+                page-break-inside: avoid;
+                margin-bottom: 1.5rem;
+                box-shadow: none !important;
+                transform: none !important;
+            }
+            .day-title {
+                color: black !important;
+            }
+            .food-note-box {
+                background: #f8fafc !important;
+                border: 1px solid #e2e8f0 !important;
+                color: black !important;
+            }
+            .activity-item {
+                background: #f8fafc !important;
+                border-left: 3px solid #3b82f6 !important;
+                color: black !important;
+            }
+            .activity-time {
+                background: #e2e8f0 !important;
+                color: black !important;
+            }
+            h1 {
+                background: none !important;
+                -webkit-text-fill-color: initial !important;
+                color: black !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Erdem Family Weekly Planner</h1>
+            <p class="subtitle">Weekly Routines & Healthy Meals Dashboard</p>
+            <div class="members">
+                <span class="member-badge badge-parents">Parents: Ece & Erdem</span>
+                <span class="member-badge badge-kids">Kids: Arya & Mira</span>
+            </div>
+        </header>
+
+        <div class="actions-bar">
+            <div class="db-status">
+                <div class="status-dot" id="db-status-dot"></div>
+                <span id="db-status-text">Local Mock DB</span>
+                <button class="config-btn" onclick="openConfigModal()">Configure MongoDB</button>
+            </div>
+            <div>
+                <button class="btn btn-secondary no-print" onclick="window.print()">
+                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/>
+                        <path d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2H5zM4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H4V3zm1 5a2 2 0 0 0-2 2v1H2a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v-1a2 2 0 0 0-2-2H5zm7 2v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1z"/>
+                    </svg>
+                    Print Planner
+                </button>
+            </div>
+        </div>
+
+        <div class="planner-grid" id="planner-grid">
+            <!-- Day cards will be generated by JavaScript -->
+        </div>
+
+        <div class="info-panel">
+            <div class="info-card">
+                <h3>📌 Board Additional Notes</h3>
+                <p><strong>Top Left (Circled):</strong> IP (or 1P)</p>
+                <p style="margin-top: 0.5rem;"><strong>Daily Routine:</strong> Kids are picked up from school every day at 3:45 PM.</p>
+            </div>
+            <div class="info-card">
+                <h3>🎗️ Notepad (Bottom Left)</h3>
+                <p><strong>CANCER RESEARCH UK</strong></p>
+                <p style="margin-top: 0.5rem; font-style: italic;">"Keep up with the healthy food choices, sports, and outdoor activities as a family!"</p>
+            </div>
+        </div>
+
+        <footer>
+            <p>Designed for the Erdem Family. Click any card's edit button to modify details. Data is automatically preserved.</p>
+        </footer>
+    </div>
+
+    <!-- Edit Day Modal -->
+    <div class="modal" id="edit-modal">
+        <div class="modal-content">
+            <div class="modal-header" id="modal-title">Edit Routine</div>
+            <form id="edit-form" onsubmit="saveDayData(event)">
+                <input type="hidden" id="edit-day-index">
+                <div class="form-group">
+                    <label for="edit-food">Meals / Food Notes</label>
+                    <textarea class="form-control" id="edit-food" rows="3" placeholder="Enter meals or food guidelines..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="edit-activities">Times & Activities (JSON Array Format or Simple text representation)</label>
+                    <textarea class="form-control" id="edit-activities" rows="5" placeholder='Example:&#10;[{"time":"15:00", "text":"After school club"}]'></textarea>
+                    <span style="font-size: 0.75rem; color: var(--text-secondary)">Must be valid JSON array with {"time": "...", "text": "..."} objects.</span>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MongoDB Configuration Modal -->
+    <div class="modal" id="config-modal">
+        <div class="modal-content">
+            <div class="modal-header">MongoDB Configuration</div>
+            <div class="form-group">
+                <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1rem;">
+                    Configure a MongoDB Data API endpoint (or serverless webhook url) to persist your weekly routines globally. If left blank, local storage mock DB will be used.
+                </p>
+                <label for="mongo-url">Endpoint API URL</label>
+                <input type="text" class="form-control" id="mongo-url" placeholder="https://data.mongodb-api.com/app/.../endpoint/...">
+            </div>
+            <div class="form-group">
+                <label for="mongo-key">API Key (if required)</label>
+                <input type="password" class="form-control" id="mongo-key" placeholder="API Key">
+            </div>
+            <div class="modal-actions">
+                <button type="button" class="btn btn-secondary" onclick="closeConfigModal()">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="saveConfig()">Connect</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const initialData = [
+            {
+                day: "Pazartesi",
+                engDay: "Monday",
+                color: "var(--monday-color)",
+                meals: "Hamburger",
+                activities: [
+                    { time: "3:20", text: "School pickup & routine start" },
+                    { time: "3:45", text: "Everyday pickup check" }
+                ]
+            },
+            {
+                day: "Salı",
+                engDay: "Tuesday",
+                color: "var(--tuesday-color)",
+                meals: "Chicken\nBezelye + pilav",
+                activities: [
+                    { time: "16:20", text: "Tennis" },
+                    { time: "16:20", text: "Basketbol" },
+                    { time: "3:45", text: "Everyday pickup check" }
+                ]
+            },
+            {
+                day: "Çarşamba",
+                engDay: "Wednesday",
+                color: "var(--wednesday-color)",
+                meals: "Tava\nsosis kasarli (Waitrose)",
+                activities: [
+                    { time: "16:45", text: "Art club" },
+                    { time: "3:45", text: "Everyday pickup check" }
+                ]
+            },
+            {
+                day: "Perşembe",
+                engDay: "Thursday",
+                color: "var(--thursday-color)",
+                meals: "Pasta Bolognese",
+                activities: [
+                    { time: "15:00", text: "After school club" },
+                    { time: "3:45", text: "Everyday pickup check" }
+                ]
+            },
+            {
+                day: "Cuma",
+                engDay: "Friday",
+                color: "var(--friday-color)",
+                meals: "Meat balls\nchicken",
+                activities: [
+                    { time: "3:20", text: "Friday routine start" },
+                    { time: "3:45", text: "Everyday pickup check" }
+                ]
+            },
+            {
+                day: "Cumartesi",
+                engDay: "Saturday",
+                color: "var(--saturday-color)",
+                meals: "Healthy choices / outdoor meals",
+                activities: [
+                    { time: "All Day", text: "Train travels to country side" }
+                ]
+            },
+            {
+                day: "Pazar",
+                engDay: "Sunday",
+                color: "var(--sunday-color)",
+                meals: "Family dinner",
+                activities: [
+                    { time: "09:30", text: "Ice skating preparation" },
+                    { time: "10:00", text: "Ice skating & Science Park 🔺" },
+                    { time: "11:15", text: "Science Park Tour (Circled)" }
+                ]
+            }
+        ];
+
+        let plannerData = [];
+        let config = { mongoUrl: "", mongoKey: "" };
+
+        // Initialize state
+        function init() {
+            // Load DB config if saved
+            const savedConfig = localStorage.getItem("erdem_mongo_config");
+            if (savedConfig) {
+                config = JSON.parse(savedConfig);
+                document.getElementById("mongo-url").value = config.mongoUrl || "";
+                document.getElementById("mongo-key").value = config.mongoKey || "";
+            }
+
+            // Load data
+            const savedData = localStorage.getItem("erdem_planner_data");
+            if (savedData) {
+                plannerData = JSON.parse(savedData);
+                renderPlanner();
+                updateDbStatus();
+            } else {
+                plannerData = initialData;
+                saveDataLocally();
+                renderPlanner();
+            }
+
+            // Try fetching from MongoDB if configured
+            if (config.mongoUrl) {
+                fetchFromMongoDB();
+            }
+        }
+
+        function saveDataLocally() {
+            localStorage.setItem("erdem_planner_data", JSON.stringify(plannerData));
+        }
+
+        function renderPlanner() {
+            const grid = document.getElementById("planner-grid");
+            grid.innerHTML = "";
+
+            plannerData.forEach((dayInfo, index) => {
+                const card = document.createElement("div");
+                card.className = "day-card";
+                card.style.setProperty("--day-color", dayInfo.color);
+
+                let activitiesHtml = "";
+                if (dayInfo.activities && dayInfo.activities.length > 0) {
+                    dayInfo.activities.forEach(act => {
+                        activitiesHtml += `
+                            <div class="activity-item">
+                                <span class="activity-time">${act.time}</span>
+                                <span class="activity-text">${act.text}</span>
+                            </div>
+                        `;
+                    });
+                } else {
+                    activitiesHtml = `<p style="font-size:0.9rem; color:var(--text-secondary); font-style:italic;">No scheduled activities</p>`;
+                }
+
+                card.innerHTML = `
+                    <button class="edit-icon" onclick="openEditModal(${index})" title="Edit ${dayInfo.day}">
+                        <svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
+                        </svg>
+                    </button>
+                    <div class="day-header">
+                        <span class="day-title">${dayInfo.day}</span>
+                        <span class="day-sub">${dayInfo.engDay}</span>
+                    </div>
+                    
+                    <div class="section-title">Meals / Food Notes</div>
+                    <div class="food-note-box">
+                        ${dayInfo.meals ? dayInfo.meals.replace(/\n/g, '<br>') : '<span style="font-style:italic;color:var(--text-secondary)">No meal notes</span>'}
+                    </div>
+
+                    <div class="section-title">Times & Activities</div>
+                    <div class="activities-container">
+                        ${activitiesHtml}
+                    </div>
+                `;
+
+                grid.appendChild(card);
+            });
+        }
+
+        // Modal Control
+        function openEditModal(index) {
+            const dayInfo = plannerData[index];
+            document.getElementById("edit-day-index").value = index;
+            document.getElementById("modal-title").innerText = `Edit: ${dayInfo.day} (${dayInfo.engDay})`;
+            document.getElementById("edit-food").value = dayInfo.meals || "";
+            document.getElementById("edit-activities").value = JSON.stringify(dayInfo.activities, null, 2);
+            document.getElementById("edit-modal").style.display = "flex";
+        }
+
+        function closeModal() {
+            document.getElementById("edit-modal").style.display = "none";
+        }
+
+        function saveDayData(event) {
+            event.preventDefault();
+            const index = document.getElementById("edit-day-index").value;
+            const meals = document.getElementById("edit-food").value;
+            const activitiesRaw = document.getElementById("edit-activities").value;
+
+            try {
+                const activities = JSON.parse(activitiesRaw);
+                plannerData[index].meals = meals;
+                plannerData[index].activities = activities;
+                
+                saveDataLocally();
+                renderPlanner();
+                closeModal();
+
+                if (config.mongoUrl) {
+                    syncToMongoDB();
+                }
+            } catch (err) {
+                alert("Invalid JSON format for Activities. Please make sure it is a valid JSON array.");
+            }
+        }
+
+        // MongoDB Sync Mocking / Real connection
+        function openConfigModal() {
+            document.getElementById("config-modal").style.display = "flex";
+        }
+
+        function closeConfigModal() {
+            document.getElementById("config-modal").style.display = "none";
+        }
+
+        function saveConfig() {
+            config.mongoUrl = document.getElementById("mongo-url").value;
+            config.mongoKey = document.getElementById("mongo-key").value;
+            localStorage.setItem("erdem_mongo_config", JSON.stringify(config));
+            closeConfigModal();
+            updateDbStatus();
+
+            if (config.mongoUrl) {
+                syncToMongoDB();
+            }
+        }
+
+        function updateDbStatus(isOnline = false) {
+            const dot = document.getElementById("db-status-dot");
+            const text = document.getElementById("db-status-text");
+
+            if (config.mongoUrl) {
+                dot.className = "status-dot online";
+                text.innerText = "MongoDB Connected";
+            } else {
+                dot.className = "status-dot";
+                text.style.boxShadow = "none";
+                text.innerText = "Local Mock DB";
+            }
+        }
+
+        async function fetchFromMongoDB() {
+            try {
+                // If using MongoDB Web SDK or generic Endpoint API:
+                const response = await fetch(config.mongoUrl, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": config.mongoKey ? `Bearer ${config.mongoKey}` : ""
+                    }
+                });
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data && Array.isArray(data)) {
+                        plannerData = data;
+                        saveDataLocally();
+                        renderPlanner();
+                        updateDbStatus(true);
+                    }
+                }
+            } catch (e) {
+                console.warn("Could not fetch from MongoDB, using local fallback.", e);
+            }
+        }
+
+        async function syncToMongoDB() {
+            try {
+                const response = await fetch(config.mongoUrl, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": config.mongoKey ? `Bearer ${config.mongoKey}` : ""
+                    },
+                    body: JSON.stringify(plannerData)
+                });
+                if (response.ok) {
+                    updateDbStatus(true);
+                }
+            } catch (e) {
+                console.error("MongoDB syncing failed:", e);
+            }
+        }
+
+        // Close modal if clicked outside
+        window.onclick = function(event) {
+            const editModal = document.getElementById("edit-modal");
+            const configModal = document.getElementById("config-modal");
+            if (event.target === editModal) {
+                closeModal();
+            }
+            if (event.target === configModal) {
+                closeConfigModal();
+            }
+        }
+
+        // Init page
+        init();
+    </script>
+</body>
+</html>
