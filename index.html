@@ -821,6 +821,7 @@
         <footer>
             <p id="footer-text-1">Designed for the Erdem Family. Click any card's edit button to modify details. Data is automatically preserved.</p>
             <p style="margin-top: 0.5rem;"><a href="https://github.com/rifaterdemsahin/weekly-routines" target="_blank" style="color: var(--accent-secondary); text-decoration: none;" id="footer-link-1">GitHub Repository</a></p>
+            <button class="btn btn-secondary" style="margin-top: 1rem; padding: 0.5rem 1rem; font-size: 0.85rem; border-color: #f43f5e; color: #f43f5e;" onclick="resetCache()">🗑️ Clear Cache / Reset</button>
         </footer>
     </div>
 
@@ -1355,6 +1356,13 @@
 
         function saveDataLocally() {
             localStorage.setItem("erdem_planner_data", JSON.stringify(plannerData));
+        }
+
+        function resetCache() {
+            if (confirm("Are you sure you want to clear your local cache? This will reset the planner to its default state and delete any manual edits you've made.")) {
+                localStorage.removeItem("erdem_planner_data");
+                window.location.reload();
+            }
         }
 
         function getTodayIndex() {
