@@ -1244,10 +1244,66 @@
                 todayEl.innerText = prefix + todayStr;
             }
 
-            const grid = document.getElementById("term-grid");
-            grid.innerHTML = "";
             const now = new Date();
             now.setHours(0,0,0,0);
+
+            // Gather all upcoming events
+            let upcomingEvents = [];
+            termData.forEach(term => {
+                term.events.forEach(ev => {
+                    const d = parseTermDate(ev.date);
+                    if (d && d >= now) {
+                        upcomingEvents.push({
+                            ...ev,
+                            parsedDate: d,
+                            termName: term.term
+                        });
+                    }
+                });
+            });
+
+            upcomingEvents.sort((a, b) => a.parsedDate - b.parsedDate);
+            const top3 = upcomingEvents.slice(0, 3);
+
+            let countdownEl = document.getElementById("yearly-countdown");
+            if (!countdownEl) {
+                countdownEl = document.createElement("div");
+                countdownEl.id = "yearly-countdown";
+                countdownEl.style.marginBottom = "2rem";
+                const noteEl = document.getElementById("yearly-note");
+                if (noteEl) {
+                    noteEl.parentNode.insertBefore(countdownEl, noteEl.nextSibling);
+                }
+            }
+
+            if (top3.length > 0) {
+                let html = `<div style="background: rgba(59, 130, 246, 0.05); border: 2px dashed var(--accent-primary); border-radius: 12px; padding: 1.5rem; margin-top: 1.5rem;">`;
+                html += `<h3 style="font-family: 'Space Grotesk', sans-serif; color: var(--accent-primary); text-align: center; margin-bottom: 1rem; font-size: 1.3rem;">🚀 ${currentLanguage === 'tr' ? 'Yaklaşan 3 Etkinlik' : 'Next 3 Upcoming Events'}</h3>`;
+                html += `<div style="display: flex; flex-direction: column; gap: 0.75rem;">`;
+                top3.forEach(ev => {
+                    const diffTime = Math.abs(ev.parsedDate - now);
+                    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                    const daysText = currentLanguage === 'tr' ? 'gün' : 'days';
+                    html += `
+                        <div style="display: flex; justify-content: space-between; align-items: center; background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); border-left: 4px solid var(--accent-secondary);">
+                            <div>
+                                <div style="font-weight: bold; color: var(--text-primary); font-size: 1.1rem;">${ev.text}</div>
+                                <div style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 0.25rem;">${ev.date} &mdash; <em>${ev.termName}</em></div>
+                            </div>
+                            <div style="font-family: 'Space Grotesk', sans-serif; font-weight: 800; font-size: 1.4rem; color: var(--accent-secondary); text-align: right; background: rgba(236, 72, 153, 0.1); padding: 0.5rem 1rem; border-radius: 8px;">
+                                ${diffDays}<br><span style="font-size: 0.8rem; font-weight: 600;">${daysText}</span>
+                            </div>
+                        </div>
+                    `;
+                });
+                html += `</div></div>`;
+                countdownEl.innerHTML = html;
+            } else {
+                countdownEl.innerHTML = "";
+            }
+
+            const grid = document.getElementById("term-grid");
+            grid.innerHTML = "";
 
             termData.forEach(term => {
                 const card = document.createElement("div");
