@@ -1454,8 +1454,14 @@
                 orderedIndices.push((todayIndex + i) % plannerData.length);
             }
 
-            orderedIndices.forEach((index) => {
+            orderedIndices.forEach((index, i) => {
                 const dayInfo = plannerData[index];
+                
+                // Calculate actual date for this day
+                const targetDate = new Date();
+                targetDate.setDate(targetDate.getDate() + i);
+                const options = { year: 'numeric', month: 'long', day: 'numeric' };
+                const dateStr = targetDate.toLocaleDateString(currentLanguage === 'tr' ? 'tr-TR' : 'en-GB', options);
                 
                 // Determine activities that match the current filter
                 let filteredActivities = dayInfo.activities;
@@ -1498,7 +1504,7 @@
                 card.innerHTML = `
                     ${index === todayIndex ? `<div class="today-badge">${t.todayBadge}</div>` : ""}
                     <div style="position: absolute; top: 1rem; right: 1rem; display: flex; gap: 0.5rem;" class="no-print">
-                        <button class="btn btn-secondary" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;" onclick="copyAsMarkdown(${index})" title="Copy as Markdown">
+                        <button class="btn btn-secondary" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;" onclick="copyAsMarkdown(${index}, ${i})" title="Copy as Markdown">
                             ${t.btnCopy}
                         </button>
                         <button class="btn btn-secondary" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;" onclick="openEditModal(${index})" title="Edit">
@@ -1507,7 +1513,7 @@
                     </div>
                     <div class="day-header" style="margin-top: 1rem;">
                         <span class="day-title">${dayDisplayName}</span>
-                        <span class="day-sub">${daySubName}</span>
+                        <span class="day-sub">${daySubName} - ${dateStr}</span>
                     </div>
 
                     <div class="section-title">${t.mealsTitle}</div>
@@ -1525,12 +1531,18 @@
             });
         }
 
-        function copyAsMarkdown(index) {
+        function copyAsMarkdown(index, offset = 0) {
             const dayInfo = plannerData[index];
             const t = translations[currentLanguage];
             const dayName = currentLanguage === "tr" ? dayInfo.day : dayInfo.engDay;
 
-            let md = `### ${dayName} Routine\n\n`;
+            // Calculate actual date
+            const targetDate = new Date();
+            targetDate.setDate(targetDate.getDate() + offset);
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            const dateStr = targetDate.toLocaleDateString(currentLanguage === 'tr' ? 'tr-TR' : 'en-GB', options);
+
+            let md = `### ${dayName} (${dateStr}) Routine\n\n`;
             md += `**${t.mealsTitle}:**\n${dayInfo.meals || "None"}\n\n`;
             md += `**${t.activitiesTitle}:**\n`;
 
